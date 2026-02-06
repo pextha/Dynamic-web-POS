@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS - Dynamic POS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <h3 id="sidebar-shop-name">Shop</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="pos.html" class="nav-item active">POS Terminal</a>
+                <a href="products.html" class="nav-item">Products</a>
+                <a href="#" onclick="logout()" class="nav-item text-danger">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar glass-panel">
+                <div class="user-info">
+                    <span id="user-display">Cashier</span>
+                </div>
+                <!-- Restaurant Context: Table Selector -->
+                <div id="restaurant-controls" class="hidden">
+                    <input type="text" id="table-number" placeholder="Table No." class="input-sm">
+                </div>
+            </header>
+
+            <div class="pos-container">
+                <!-- Product Grid -->
+                <div class="product-section">
+                    <div class="category-filter" id="category-filter">
+                        <button class="filter-btn active" onclick="filterProducts('All')">All</button>
+                        <!-- Dynamic Categories here -->
+                    </div>
+
+                    <div class="search-bar">
+                        <input type="text" id="product-search" placeholder="Search products...">
+                    </div>
+
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products injected here -->
+                    </div>
+                </div>
+
+                <!-- Cart / Billing -->
+                <div class="billing-section glass-panel">
+                    <h3>Current Order</h3>
+                    <div class="cart-items" id="cart-items">
+                        <!-- Cart Items -->
+                    </div>
+
+                    <div class="billing-summary">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="sub-total">0.00</span>
+                        </div>
+                        <div class="summary-row" id="tax-row">
+                            <span>Tax (<span id="tax-pct">0</span>%)</span>
+                            <span id="tax-amount">0.00</span>
+                        </div>
+                        <div class="summary-row" id="discount-row">
+                            <span>Discount</span>
+                            <span id="discount-amount">0.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span id="grand-total">0.00</span>
+                        </div>
+
+                        <button class="btn-primary btn-block" onclick="processOrder()">Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals mainly for Clothing variant selection if needed, or success -->
+    <div id="modal-overlay" class="hidden"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTheme();
+            checkAuth(); // redirect if not logged in
+            initPOS();
+        });
+    </script>
+</body>
+
+</html>
