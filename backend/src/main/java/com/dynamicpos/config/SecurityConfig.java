@@ -39,7 +39,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/public/**").permitAll() // Allow auth endpoints
+                        .requestMatchers("/api/auth/**", "/api/public/**", "/uploads/**").permitAll() // Allow auth
+                                                                                                      // endpoints and
+                                                                                                      // static uploads
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

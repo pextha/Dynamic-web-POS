@@ -118,8 +118,12 @@ function renderProducts(products) {
 
         let displayPrice = CONFIG.CURRENCY_SYMBOL + p.price.toFixed(2);
 
+        const imageHtml = p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${p.name}" class="product-img">`
+            : `<div class="product-img"></div>`;
+
         card.innerHTML = `
-            <div class="product-img"></div> 
+            ${imageHtml}
             <h4>${p.name}</h4>
             <p>${displayPrice}</p>
             <small>${p.stock} in stock</small>
@@ -320,23 +324,44 @@ function closeModal() {
 
 document.getElementById('add-product-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const product = {
-        name: document.getElementById('p-name').value,
-        category: document.getElementById('p-category').value,
-        price: parseFloat(document.getElementById('p-price').value),
-        stock: parseInt(document.getElementById('p-stock').value),
-        imageUrl: document.getElementById('p-image').value
-        // Would gather dynamic properties here
-    };
 
-    await fetch(`${CONFIG.API_BASE_URL}/products`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(product)
-    });
+    const formData = new FormData();
+    formData.append('name', document.getElementById('p-name').value);
+    formData.append('category', document.getElementById('p-category').value);
+    formData.append('price', document.getElementById('p-price').value);
+    formData.append('stock', document.getElementById('p-stock').value);
 
-    closeModal();
-    loadProductsTable();
+    // Dynamic fields manually checked for demo
+    const sizeEl = document.getElementById('p-size');
+    if (sizeEl) formData.append('size', sizeEl.value);
+
+    const colorEl = document.getElementById('p-color');
+    if (colorEl) formData.append('color', colorEl.value);
+
+    const fileInput = document.getElementById('p-image-file');
+    if (fileInput && fileInput.files[0]) {
+        formData.append('imageFile', fileInput.files[0]);
+    }
+
+    try {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/products`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+
+        if (res.ok) {
+            closeModal();
+            loadProductsTable();
+        } else {
+            alert("Failed to add product");
+        }
+    } catch (e) {
+        console.error(e);
+        alert("Error adding product");
+    }
 });
 
 function checkShopSpecificInputs() {
