@@ -6,7 +6,7 @@ const CONFIG = {
     PRIMARY_COLOR: "green",
     SECONDARY_COLOR: "white",
     ACCENT_COLOR: "green",
-    BACKGROUND_COLOR: "white",
+    BACKGROUND_COLOR: "lightgreen",
     TEXT_COLOR: "black",
 
     FONT_FAMILY: "Arial",
