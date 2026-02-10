@@ -20,5 +20,5 @@ const CONFIG = {
     LANGUAGE: "English",
     DATE_FORMAT: "dd/MM/yyyy",
 
-    API_BASE_URL: "http://localhost:8080/api"
+    API_BASE_URL: "http://localhost:8089/api"
 };
